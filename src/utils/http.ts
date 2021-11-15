@@ -66,3 +66,22 @@ type Person={
 
 const xiaoming:Partial<Person>={name:'xiaoming'}
 const shenMiRen:Omit<Person, 'name'|'age'>= { age:10}
+type PersonKeys= keyof Person
+type PersonOnlyName=Pick<Person, 'name'>
+type PersonExcludeName=Exclude<PersonKeys, 'name'>
+
+//Partial的实现
+type Partial<T> = {
+  [P in keyof T]?: T[P];
+};
+
+//Pick的实现
+type Pick<T, K extends keyof T> = {
+  [P in K]: T[P];
+};
+
+//Exclude的实现
+type Exclude<T, U> = T extends U ? never : T;
+
+//Omit
+type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
