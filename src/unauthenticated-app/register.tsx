@@ -1,8 +1,7 @@
-import React, { FormEvent } from "react";
-import { cleanObject } from "utils";
+import React from "react";
 import { useAuth } from "context/auth-context";
-import { Button, Form, Input } from "antd";
-import { LongButton } from "./index";
+import { Form, Input } from "antd";
+import { LongButton } from "unauthenticated-app/index";
 
 // interface Base {
 //   id: number
@@ -24,7 +23,7 @@ export const RegisterScreen = () => {
   const { register, user } = useAuth();
 
   // HTMLFormElement extends Element
-  const handleSubmit = (values:{username:string,password:string}) => {
+  const handleSubmit = (values: { username: string; password: string }) => {
     register(values);
   };
 

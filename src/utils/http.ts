@@ -46,42 +46,50 @@ export const http = async (
     });
 };
 
+// JS 中的typeof，是在runtime时运行的
+// return typeof 1 === 'number'
+
+// TS 中的typeof，是在静态环境运行的
+// return (...[endpoint, config]: Parameters<typeof http>) =>
 export const useHttp = () => {
   const { user } = useAuth();
-  // TODO 讲解 TS Utility Types
-  //js中的typeof是在runtime时运行的，ts中的typeof是在静态环境运行的
-  // utility type的用法：用泛型给它传入一个其它类型，然后utility type对这个类型进行某种操作
+  // utility type 的用法：用泛型给它传入一个其他类型，然后utility type对这个类型进行某种操作
   return (...[endpoint, config]: Parameters<typeof http>) =>
     http(endpoint, { ...config, token: user?.token });
 };
 
-// interface在这种情况下没法替代type
-type FavoriteNumber=string|number
+// 类型别名、Utility Type 讲解
+// 联合类型
+let myFavoriteNumber: string | number;
+myFavoriteNumber = "seven";
+myFavoriteNumber = 7;
+// TS2322: Type '{}' is not assignable to type 'string | number'.
+// myFavoriteNumber = {}
+let jackFavoriteNumber: string | number;
 
-//interface也没法实现Utility type
-type Person={
-  name:string,
-  age:number
-}
+// 类型别名在很多情况下可以和interface互换
+// interface Person {
+//   name: string
+// }
+// type Person = { name: string }
+// const xiaoMing: Person = {name: 'xiaoming'}
 
-const xiaoming:Partial<Person>={name:'xiaoming'}
-const shenMiRen:Omit<Person, 'name'|'age'>= { age:10}
-type PersonKeys= keyof Person
-type PersonOnlyName=Pick<Person, 'name'>
-type PersonExcludeName=Exclude<PersonKeys, 'name'>
+// 类型别名, interface 在这种情况下没法替代type
+type FavoriteNumber = string | number;
+let roseFavoriteNumber: FavoriteNumber = "6";
 
-//Partial的实现
+// interface 也没法实现Utility type
+type Person = {
+  name: string;
+  age: number;
+};
+const xiaoMing: Partial<Person> = {};
+const shenMiRen: Omit<Person, "name" | "age"> = {};
+type PersonKeys = keyof Person;
+type PersonOnlyName = Pick<Person, "name" | "age">;
+type Age = Exclude<PersonKeys, "name">;
+
+// Partial 的实现
 type Partial<T> = {
   [P in keyof T]?: T[P];
 };
-
-//Pick的实现
-type Pick<T, K extends keyof T> = {
-  [P in K]: T[P];
-};
-
-//Exclude的实现
-type Exclude<T, U> = T extends U ? never : T;
-
-//Omit
-type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
