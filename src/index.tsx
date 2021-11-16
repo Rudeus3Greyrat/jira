@@ -10,8 +10,8 @@ import { AppProviders } from "context";
 loadServer(() =>
   ReactDOM.render(
     <React.StrictMode>
+      <DevTools />
       <AppProviders>
-        <DevTools />
         <App />
       </AppProviders>
     </React.StrictMode>,
