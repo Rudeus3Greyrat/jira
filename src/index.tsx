@@ -1,3 +1,4 @@
+import "./wdyr";
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
@@ -10,8 +11,8 @@ import { AppProviders } from "context";
 loadServer(() =>
   ReactDOM.render(
     <React.StrictMode>
-      <DevTools />
       <AppProviders>
+        <DevTools />
         <App />
       </AppProviders>
     </React.StrictMode>,

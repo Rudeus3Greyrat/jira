@@ -60,6 +60,7 @@
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
     "@types/qs": "^6.9.5",
+    "@welldone-software/why-did-you-render": "^6.2.3",
     "eslint-config-prettier": "^6.15.0",
     "husky": ">=4",
     "json-server": "^0.16.2",
