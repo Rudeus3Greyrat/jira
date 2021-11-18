@@ -2,7 +2,7 @@ import React from "react";
 import { useAuth } from "context/auth-context";
 import { Form, Input } from "antd";
 import { LongButton } from "unauthenticated-app/index";
-import { useAsync } from "../utils/useAsync";
+import { useAsync } from "utils/use-async";
 
 // interface Base {
 //   id: number
@@ -18,14 +18,14 @@ import { useAsync } from "../utils/useAsync";
 // // 鸭子类型(duck typing)：面向接口编程 而不是 面向对象编程
 // const a = {id: 1, name: 'jack'}
 // test(a)
-const apiUrl = process.env.REACT_APP_API_URL;
+// const apiUrl = process.env.REACT_APP_API_URL;
 
 export const RegisterScreen = ({
   onError,
 }: {
   onError: (error: Error) => void;
 }) => {
-  const { register, user } = useAuth();
+  const { register } = useAuth();
   const { run, isLoading } = useAsync(undefined, { throwOnError: true });
 
   // HTMLFormElement extends Element
@@ -38,12 +38,12 @@ export const RegisterScreen = ({
     cpassword: string;
   }) => {
     if (cpassword !== values.password) {
-      onError(new Error("请确认两次输入的密码箱同"));
+      onError(new Error("请确认两次输入的密码相同"));
       return;
     }
     try {
       await run(register(values));
-    } catch (e) {
+    } catch (e: any) {
       onError(e);
     }
   };
@@ -69,7 +69,7 @@ export const RegisterScreen = ({
         <Input placeholder={"确认密码"} type="password" id={"cpassword"} />
       </Form.Item>
       <Form.Item>
-        <LongButton htmlType={"submit"} type={"primary"}>
+        <LongButton loading={isLoading} htmlType={"submit"} type={"primary"}>
           注册
         </LongButton>
       </Form.Item>

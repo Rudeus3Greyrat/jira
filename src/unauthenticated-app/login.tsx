@@ -2,7 +2,7 @@ import React from "react";
 import { useAuth } from "context/auth-context";
 import { Form, Input } from "antd";
 import { LongButton } from "unauthenticated-app/index";
-import { useAsync } from "../utils/useAsync";
+import { useAsync } from "utils/use-async";
 
 // interface Base {
 //   id: number
@@ -18,15 +18,15 @@ import { useAsync } from "../utils/useAsync";
 // // 鸭子类型(duck typing)：面向接口编程 而不是 面向对象编程
 // const a = {id: 1, name: 'jack'}
 // test(a)
-const apiUrl = process.env.REACT_APP_API_URL;
+// const apiUrl = process.env.REACT_APP_API_URL;
 
 export const LoginScreen = ({
   onError,
 }: {
   onError: (error: Error) => void;
 }) => {
-  const { login, user } = useAuth();
-  const { run, isLoading } = useAsync();
+  const { login } = useAuth();
+  const { run, isLoading } = useAsync(undefined, { throwOnError: true });
 
   // HTMLFormElement extends Element
   const handleSubmit = async (values: {
@@ -35,7 +35,7 @@ export const LoginScreen = ({
   }) => {
     try {
       await run(login(values));
-    } catch (e) {
+    } catch (e: any) {
       onError(e);
     }
   };
@@ -55,7 +55,7 @@ export const LoginScreen = ({
         <Input placeholder={"密码"} type="password" id={"password"} />
       </Form.Item>
       <Form.Item>
-        <LongButton htmlType={"submit"} type={"primary"} loading={isLoading}>
+        <LongButton loading={isLoading} htmlType={"submit"} type={"primary"}>
           登录
         </LongButton>
       </Form.Item>
